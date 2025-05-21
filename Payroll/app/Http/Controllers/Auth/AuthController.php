@@ -78,7 +78,7 @@ class AuthController extends Controller
         // if (User::count() > 0 && !config('auth.allow_registration', false)) {
         //     return redirect('/login')->with('error', 'Registrasi tidak diizinkan.');
         // }
-        return view('auth.register'); // Buat view: resources/views/auth/register.blade.php
+        return view('Auth.register'); // Buat view: resources/views/auth/register.blade.php
     }
 
     public function register(Request $request)

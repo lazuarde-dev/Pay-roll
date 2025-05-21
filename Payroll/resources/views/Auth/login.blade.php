@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - E-Library Admin</title>
+    <title>Login - Sistem Absensi</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -13,7 +13,7 @@
             background-color: #f5f7fa;
         }
         .login-container {
-            background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2940&auto=format&fit=crop');
+            background-image: url('https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
         }
@@ -30,36 +30,57 @@
             30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
             40%, 60% { transform: translate3d(4px, 0, 0); }
         }
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
     </style>
 </head>
 <body>
     <div class="flex min-h-screen">
         <!-- Left side - Image -->
         <div class="hidden lg:block lg:w-1/2 login-container relative">
-            <div class="absolute inset-0 bg-emerald-900/70"></div>
+            <div class="absolute inset-0 bg-emerald-900/80"></div>
             <div class="absolute inset-0 flex flex-col items-center justify-center text-white p-12">
                 <div class="max-w-md">
-                    <h1 class="text-4xl font-bold mb-6">E-Library Admin Portal</h1>
-                    <p class="text-lg mb-8">Manage your library collection efficiently with our comprehensive admin dashboard.</p>
+                    <div class="flex items-center mb-6">
+                        <div class="bg-white/20 p-3 rounded-full mr-4">
+                            <i data-lucide="clock" class="h-8 w-8"></i>
+                        </div>
+                        <h1 class="text-4xl font-bold">Sistem Absensi</h1>
+                    </div>
+                    <p class="text-lg mb-8">Kelola kehadiran karyawan dengan mudah dan efisien menggunakan sistem absensi digital kami.</p>
                     <div class="space-y-4">
                         <div class="flex items-center">
                             <div class="bg-white/20 p-2 rounded-full mr-4">
-                                <i data-lucide="check" class="h-5 w-5"></i>
+                                <i data-lucide="check-circle" class="h-5 w-5"></i>
                             </div>
-                            <p>Comprehensive book management system</p>
+                            <p>Pencatatan kehadiran otomatis dan akurat</p>
                         </div>
                         <div class="flex items-center">
                             <div class="bg-white/20 p-2 rounded-full mr-4">
-                                <i data-lucide="check" class="h-5 w-5"></i>
+                                <i data-lucide="calendar" class="h-5 w-5"></i>
                             </div>
-                            <p>Track borrowing history and availability</p>
+                            <p>Laporan absensi real-time dan terpadu</p>
                         </div>
                         <div class="flex items-center">
                             <div class="bg-white/20 p-2 rounded-full mr-4">
-                                <i data-lucide="check" class="h-5 w-5"></i>
+                                <i data-lucide="bar-chart" class="h-5 w-5"></i>
                             </div>
-                            <p>Generate detailed reports and analytics</p>
+                            <p>Analisis produktivitas dan kinerja karyawan</p>
                         </div>
+                    </div>
+                    
+                    <div class="mt-12 flex items-center">
+                        <div class="flex -space-x-2 mr-4">
+                            <img class="h-10 w-10 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/women/32.jpg" alt="">
+                            <img class="h-10 w-10 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/men/45.jpg" alt="">
+                            <img class="h-10 w-10 rounded-full border-2 border-white" src="https://randomuser.me/api/portraits/women/53.jpg" alt="">
+                        </div>
+                        <p class="text-sm">Bergabung dengan <span class="font-semibold">1,000+ perusahaan</span> yang telah menggunakan sistem kami</p>
                     </div>
                 </div>
             </div>
@@ -70,10 +91,17 @@
             <div class="w-full max-w-md">
                 <div class="text-center mb-10">
                     <div class="inline-block p-4 bg-emerald-50 rounded-full mb-4">
-                        <i data-lucide="book-open" class="h-10 w-10 text-emerald-600"></i>
+                        <i data-lucide="fingerprint" class="h-10 w-10 text-emerald-600"></i>
                     </div>
                     <h2 class="text-3xl font-bold text-gray-800">Selamat Datang Kembali</h2>
                     <p class="text-gray-600 mt-2">Silakan masuk untuk melanjutkan ke sistem.</p>
+                </div>
+
+                <!-- Current Time Display -->
+                <div class="mb-6 text-center">
+                    <div class="text-sm text-gray-500">Waktu Server</div>
+                    <div class="text-xl font-semibold text-gray-800" id="current-time">00:00:00</div>
+                    <div class="text-sm text-gray-500" id="current-date">Loading...</div>
                 </div>
 
                 <!-- Error Message -->
@@ -100,16 +128,17 @@
                     </div>
                 </div>
 
+                
                 <form action="dashboard.html" method="GET" class="space-y-6" id="login-form">
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Alamat Email</label>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Alamat Email / ID Karyawan</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i data-lucide="mail" class="h-5 w-5 text-gray-400"></i>
+                                <i data-lucide="user" class="h-5 w-5 text-gray-400"></i>
                             </div>
-                            <input id="email" name="email" type="email" autocomplete="email" required 
+                            <input id="email" name="email" type="text" autocomplete="email" required 
                                 class="form-input block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none"
-                                placeholder="nama@perusahaan.com">
+                                placeholder="nama@perusahaan.com atau ID123">
                         </div>
                         <p id="email-error" class="mt-1 text-sm text-red-600 hidden">Email atau password yang Anda masukkan salah.</p>
                     </div>
@@ -155,40 +184,36 @@
                             <div class="w-full border-t border-gray-300"></div>
                         </div>
                         <div class="relative flex justify-center text-sm">
-                            <span class="px-2 bg-white text-gray-500">Atau masuk dengan</span>
+                            <span class="px-2 bg-white text-gray-500">Atau</span>
                         </div>
                     </div>
 
-                    <div class="mt-6 grid grid-cols-2 gap-3">
-                        <button type="button" class="inline-flex justify-center items-center py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all duration-150">
-                            <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M22.56 12.25C22.56 11.47 22.49 10.72 22.36 10H12V14.26H17.92C17.66 15.63 16.88 16.79 15.71 17.57V20.34H19.28C21.36 18.42 22.56 15.6 22.56 12.25Z" fill="#4285F4"/>
-                                <path d="M12 23C14.97 23 17.46 22.02 19.28 20.34L15.71 17.57C14.73 18.23 13.48 18.63 12 18.63C9.13 18.63 6.72 16.69 5.82 14.09H2.12V16.95C3.94 20.53 7.8 23 12 23Z" fill="#34A853"/>
-                                <path d="M5.82 14.09C5.6 13.43 5.48 12.73 5.48 12C5.48 11.27 5.6 10.57 5.82 9.91V7.05H2.12C1.41 8.57 1 10.24 1 12C1 13.76 1.41 15.43 2.12 16.95L5.82 14.09Z" fill="#FBBC05"/>
-                                <path d="M12 5.37C13.62 5.37 15.06 5.94 16.21 7.02L19.36 3.87C17.45 2.09 14.97 1 12 1C7.8 1 3.94 3.47 2.12 7.05L5.82 9.91C6.72 7.31 9.13 5.37 12 5.37Z" fill="#EA4335"/>
-                            </svg>
-                            <span>Google</span>
+                    <div class="mt-6">
+                        <button type="button" class="w-full inline-flex justify-center items-center py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all duration-150">
+                            <i data-lucide="scan-face" class="h-5 w-5 mr-2 text-emerald-600"></i>
+                            <span>Absen dengan Face Recognition</span>
                         </button>
-                        <button type="button" class="inline-flex justify-center items-center py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all duration-150">
-                            <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0C5.37 0 0 5.37 0 12C0 17.31 3.435 21.795 8.205 23.385C8.805 23.49 9.03 23.13 9.03 22.815C9.03 22.53 9.015 21.585 9.015 20.58C6 21.135 5.22 19.845 4.98 19.17C4.845 18.825 4.26 17.76 3.75 17.475C3.33 17.25 2.73 16.695 3.735 16.68C4.68 16.665 5.355 17.55 5.58 17.91C6.66 19.725 8.385 19.215 9.075 18.9C9.18 18.12 9.495 17.595 9.84 17.295C7.17 16.995 4.38 15.96 4.38 11.37C4.38 10.065 4.845 8.985 5.61 8.145C5.49 7.845 5.07 6.615 5.73 4.965C5.73 4.965 6.735 4.65 9.03 6.195C9.99 5.925 11.01 5.79 12.03 5.79C13.05 5.79 14.07 5.925 15.03 6.195C17.325 4.635 18.33 4.965 18.33 4.965C18.99 6.615 18.57 7.845 18.45 8.145C19.215 8.985 19.68 10.05 19.68 11.37C19.68 15.975 16.875 16.995 14.205 17.295C14.64 17.67 15.015 18.39 15.015 19.515C15.015 21.12 15 22.41 15 22.815C15 23.13 15.225 23.505 15.825 23.385C18.2072 22.5807 20.2772 21.0497 21.7437 19.0074C23.2101 16.965 23.9993 14.5143 24 12C24 5.37 18.63 0 12 0Z" fill="currentColor"/>
-                            </svg>
-                            <span>GitHub</span>
-                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-center">
+                    <div class="inline-flex items-center px-4 py-2 bg-emerald-50 rounded-full">
+                        <div class="h-2 w-2 rounded-full bg-green-500 pulse mr-2"></div>
+                        <span class="text-sm text-emerald-700">Sistem aktif dan berjalan normal</span>
                     </div>
                 </div>
 
                 <p class="mt-8 text-center text-sm text-gray-600">
                     Belum punya akun?
-                    <a class="nav-link {{ request()->routeIs('Auth.register.*') ? 'active' : '' }}"
-                        href="{{ route('Auth.register') }}"></a>
+                    <a href="{{ route('Auth.register') }}" class="text-emerald-600 hover:underline">Daftar sekarang</a>
+
                 </p>
             </div>
         </div>
     </div>
 
     <footer class="absolute bottom-0 w-full py-4 text-center text-gray-500 text-sm">
-        <p>E-Library Admin © 2025. All rights reserved.</p>
+        <p>Sistem Absensi © 2025. All rights reserved.</p>
     </footer>
 
     <script>
@@ -233,6 +258,35 @@
                 document.getElementById('email').classList.add('border-red-500');
             }
         });
+
+        // Live clock
+        function updateClock() {
+            const now = new Date();
+            
+            // Format time: HH:MM:SS
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const timeString = `${hours}:${minutes}:${seconds}`;
+            
+            // Format date: Day, DD Month YYYY
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            
+            const day = days[now.getDay()];
+            const date = now.getDate();
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+            
+            const dateString = `${day}, ${date} ${month} ${year}`;
+            
+            document.getElementById('current-time').textContent = timeString;
+            document.getElementById('current-date').textContent = dateString;
+        }
+        
+        // Update clock immediately and then every second
+        updateClock();
+        setInterval(updateClock, 1000);
     </script>
 </body>
 </html>
