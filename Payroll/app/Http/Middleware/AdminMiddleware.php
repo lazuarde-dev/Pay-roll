@@ -14,8 +14,7 @@ class AdminMiddleware
         if (Auth::check() && Auth::user()->isAdmin()) {
             return $next($request);
         }
-        // Jika bukan admin, redirect atau abort
-        // Auth::logout(); // Opsional: logout jika akses tidak sah
-        return redirect('/login')->with('error', 'Akses ditolak. Anda bukan Admin.');
+        // abort(403, 'Unauthorized action.'); // Atau redirect ke halaman lain
+        return redirect('/dashboard')->with('error', 'Anda tidak memiliki akses admin.');
     }
 }

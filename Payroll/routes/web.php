@@ -56,3 +56,9 @@ Route::middleware(['auth', 'karyawan'])->prefix('karyawan')->name('karyawan.')->
     // Riwayat Absensi Pribadi
     Route::get('/absensi/riwayat', [KaryawanAbsensiController::class, 'riwayat'])->name('absensi.riwayat');
 });
+
+// routes/web.php
+// ... (route login dan logout yang sudah ada)
+
+Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('register')->middleware('guest');
+Route::post('register', [AuthController::class, 'register'])->name('register.post')->middleware('guest');
