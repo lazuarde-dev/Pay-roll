@@ -13,6 +13,9 @@ use App\Http\Controllers\Karyawan\AbsensiController as KaryawanAbsensiController
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('login')->middleware('guest');
 Route::post('login', [AuthController::class, 'login'])->name('login.post')->middleware('guest');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register')->middleware('guest');
+Route::post('register', [AuthController::class, 'register'])->name('register.post')->middleware('guest');
+
 
 // Route::get('/setup-admin-first-time', [AuthController::class, 'setupAdmin']); // Hati-hati
 
@@ -60,5 +63,3 @@ Route::middleware(['auth', 'karyawan'])->prefix('karyawan')->name('karyawan.')->
 // routes/web.php
 // ... (route login dan logout yang sudah ada)
 
-Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('register')->middleware('guest');
-Route::post('register', [AuthController::class, 'register'])->name('register.post')->middleware('guest');
